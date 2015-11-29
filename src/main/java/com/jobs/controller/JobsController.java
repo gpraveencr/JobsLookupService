@@ -12,8 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jobs.dao.JobRepository;
@@ -44,25 +46,35 @@ public class JobsController {
 	@RequestMapping(value="/jobs", method=RequestMethod.GET)
 	@ResponseBody
 	public List<Job> getAllJobs() {
+		logger.debug("Request is in getAllJobs()");
 		return jobRepository.getAllJobs();
 	}
 
-	@RequestMapping(value="/jobs/{zipCode}", method=RequestMethod.GET)
+	@RequestMapping(value="/jobs/zip{zipCode}", method=RequestMethod.GET)
 	@ResponseBody
-	public List<Job> getJobsByZipCode(@PathVariable("zipCode") String zipCode) {
+	public List<Job> getJobsByZipCode(@RequestParam String zipCode) {
+		logger.debug("Request is in getJobsByZipCode(): zipCode: " +  zipCode);
 		return jobRepository.getJobsByZipCode(zipCode);
 	}
 
-	@RequestMapping(value="/jobs/{company}", method=RequestMethod.GET)
+	@RequestMapping(value="/jobs/company{company}", method=RequestMethod.GET)
 	@ResponseBody
-	public List<Job> getJobsByCompany(@PathVariable("company") String company) {
+	public List<Job> getJobsByCompany(@RequestParam String company) {
+		logger.debug("Request is in getJobsByCompany(): company: " + company);
 		return jobRepository.getJobsByCompany(company);
-	}
+	} 
 
-	
-	@RequestMapping(value="/job", method=RequestMethod.POST)
+	@RequestMapping(value="/jobs/title{title}", method=RequestMethod.GET)
 	@ResponseBody
-	public RestResponse addJob(@ModelAttribute("job") Job job) {
+	public List<Job> getJobsByTitle(@RequestParam String title) {
+		logger.debug("Request is in getJobsByTitle(): title: " + title);
+		return jobRepository.getJobsByTitle(title);
+	} 
+	
+	@RequestMapping(value="/jobs", method=RequestMethod.POST)
+	@ResponseBody
+	public RestResponse addJob(@RequestBody Job job) {
+		logger.debug("Request is in addJob(): job: " + job.toString());
 		
 		RestResponse response = new RestResponse(true, "Success");
 		try {

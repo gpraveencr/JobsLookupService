@@ -1,6 +1,7 @@
 package com.jobs.dao;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -26,15 +27,15 @@ public class JobRepository {
 	}
 	
 	public List<Job> getJobsByZipCode(String zipCode) {
-		return mongoTemplate.find(Query.query(Criteria.where("zipCode").is(zipCode)), Job.class);
+		return mongoTemplate.find(Query.query(Criteria.where("zipCode").in(zipCode)), Job.class, COLLECTION_NAME);
 	}
 	
 	public List<Job> getJobsByCompany(String company) {
-		return mongoTemplate.find(Query.query(Criteria.where("companyName").is(company)), Job.class);
+		return mongoTemplate.find(Query.query(Criteria.where("companyName").regex(Pattern.compile(company, Pattern.CASE_INSENSITIVE))), Job.class, COLLECTION_NAME);
 	}
 	
 	public List<Job> getJobsByTitle(String title) {
-		return mongoTemplate.find(Query.query(Criteria.where("companyName").regex("*" + title + "*")), Job.class);
+		return mongoTemplate.find(Query.query(Criteria.where("title").regex(Pattern.compile(title, Pattern.CASE_INSENSITIVE))), Job.class, COLLECTION_NAME);
 	}
 	
 	public List<Job> getAllJobs() {

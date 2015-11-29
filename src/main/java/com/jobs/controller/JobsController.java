@@ -9,9 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.ui.Model; 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,29 +18,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jobs.dao.JobRepository;
 import com.jobs.model.Job;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
 import coom.jobs.response.RestResponse;
 
-@Controller
+@Controller 
+@Api(value = "/rest", description = "Jobs Lookup Service")
 public class JobsController {
 
 	private static Logger logger = LoggerFactory.getLogger(JobsController.class);
 	
 	@Autowired
 	private JobRepository jobRepository;
-	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Default Jobs REST Service Home Page.");
-		
-		Date date = new Date();
-		DateFormat dateFormate = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		String formatedDate = dateFormate.format(date);
-		model.addAttribute("serverTime", formatedDate);
-		
-		return "status";
-	}
-	
+	 
+	@ApiOperation(value = "Get All Jobs",
+            notes = "Anything Else?")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "OK"),
+        @ApiResponse(code = 500, message = "Something wrong in Server")})
 	@RequestMapping(value="/jobs", method=RequestMethod.GET)
 	@ResponseBody
 	public List<Job> getAllJobs() {

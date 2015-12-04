@@ -51,8 +51,15 @@ public class JobsController {
 	public List<Job> getJobsByZipCode(@RequestParam String zipCode) {
 		logger.debug("Request is in getJobsByZipCode(): zipCode: " +  zipCode);
 		return jobRepository.getJobsByZipCode(zipCode);
-	}
+	} 
 
+	@RequestMapping(value="/jobs/titles", method=RequestMethod.GET)
+	@ResponseBody
+	public List<String> getJobsTitles() {
+		logger.debug("Request is in getJobsTitles()");
+		return jobRepository.getJobsTitles();
+	}
+	
 	@RequestMapping(value="/jobs/company{company}", method=RequestMethod.GET)
 	@ResponseBody
 	public List<Job> getJobsByCompany(@RequestParam String company) {

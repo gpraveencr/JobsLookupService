@@ -5,7 +5,10 @@ import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Fields;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Field;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -28,6 +31,15 @@ public class JobRepository {
 	
 	public List<Job> getJobsByZipCode(String zipCode) {
 		return mongoTemplate.find(Query.query(Criteria.where("zipCode").in(zipCode)), Job.class, COLLECTION_NAME);
+	} 
+
+	public List<String> getJobsTitles() {  
+//		BasicQuery basicQuery = new BasicQuery("{title : 1}"); 
+		
+		@SuppressWarnings("unchecked")
+		List<String> titles = mongoTemplate.getCollection(COLLECTION_NAME).distinct("title");
+		return titles;
+//		return mongoTemplate.find(basicQuery, Job.class, COLLECTION_NAME);
 	}
 	
 	public List<Job> getJobsByCompany(String company) {

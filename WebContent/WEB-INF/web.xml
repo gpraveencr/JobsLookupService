@@ -13,7 +13,8 @@
         <url-pattern>/jobs</url-pattern>  
         <url-pattern>/jobs/zip</url-pattern>  
         <url-pattern>/jobs/company</url-pattern>  
-        <url-pattern>/jobs/title</url-pattern>   
+        <url-pattern>/jobs/title</url-pattern>    
+        <url-pattern>/jobs/titles</url-pattern>   
         <url-pattern>*.*</url-pattern>
     </servlet-mapping>
     

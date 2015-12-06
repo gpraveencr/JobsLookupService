@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.jobs.model.Job;
+import com.mongodb.DBObject;
 
 @Repository
 public class JobRepository {
@@ -34,12 +35,10 @@ public class JobRepository {
 	} 
 
 	public List<String> getJobsTitles() {  
-//		BasicQuery basicQuery = new BasicQuery("{title : 1}"); 
 		
 		@SuppressWarnings("unchecked")
 		List<String> titles = mongoTemplate.getCollection(COLLECTION_NAME).distinct("title");
-		return titles;
-//		return mongoTemplate.find(basicQuery, Job.class, COLLECTION_NAME);
+		return titles; 
 	}
 	
 	public List<Job> getJobsByCompany(String company) {
